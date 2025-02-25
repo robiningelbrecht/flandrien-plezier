@@ -1,29 +1,36 @@
 <html>
 <head>
     <title>Flandrienplezier</title>
+    <script src="https://cdn.jsdelivr.net/npm/public-google-sheets-parser@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js"></script>
 </head>
 <style>
     * {
         font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     }
 
-    h1 {
+    h1, h2 {
         text-align: center;
     }
 
     main {
-        height: 100vh;
+        min-height: 100vh;
         width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
+        gap: 10px;
     }
 
-    main > div {
+    .flex{
         display: flex;
-        align-items: center;
         column-gap: 0.5rem;
+        align-items: center;
+    }
+
+    .w-full{
+        width: 100%;
     }
 
     .icon {
@@ -33,7 +40,7 @@
 <body>
 <main>
     <h1>Flandrienplezier - Zijn we d'r al?</h1>
-    <div>
+    <div class="flex flex-col">
         <svg viewBox="0 0 1024 1024" class="icon" xmlns="http://www.w3.org/2000/svg" fill="#000000">
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -50,7 +57,7 @@
         </svg>
         <span>Dagen ver in 2025: <strong class="day-of-the-year">...</strong></span>
     </div>
-    <div>
+    <div class="flex flex-col">
         <svg viewBox="0 0 1024 1024" class="icon" xmlns="http://www.w3.org/2000/svg" fill="#000000">
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -68,6 +75,10 @@
         </svg>
         <span>Target vandaag: <strong class="todays-target">...</strong></span>
     </div>
+    <div class="w-full">
+        <h2>Challenge 2024</h2>
+        <div class="challenge-2024" style="width: 100%;height:400px;"></div>
+    </div>
 </main>
 <script>
     const now = new Date();
@@ -78,6 +89,43 @@
 
     document.querySelector('.day-of-the-year').innerText = day;
     document.querySelector('.todays-target').innerText = Math.ceil(2500 / 365 * day) + 'h';
+
+    let parser = new PublicGoogleSheetsParser('1KSP-WQZOKonBoQJ5Ye16wstMFdXA9BW_goE8Qcx1ERg', {
+        sheetName: '2024',
+        useFormat: true
+    });
+    parser.parse().then(data => {
+        const myChart = echarts.init(document.querySelector('.challenge-2024'));
+        const series = [];
+
+        Object.keys(data[0]).filter(key => key !== 'Month').forEach(seriesName => {
+            series.push({
+                name: seriesName,
+                type: 'line',
+                data: data.map(item => item[seriesName])
+            });
+        });
+
+        const option = {
+            tooltip: {
+                trigger: 'axis',
+                valueFormatter: (value) => value + 'km'
+            },
+            legend: {},
+            xAxis: {
+                data: data.map(item => item['Month'])
+            },
+            yAxis: {
+                axisLabel: {
+                    formatter: function (value, index) {
+                        return value + 'km';
+                    }
+                }
+            },
+            series: series
+        };
+        myChart.setOption(option);
+    });
 </script>
 </body>
 </html>
