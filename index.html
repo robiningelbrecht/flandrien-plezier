@@ -92,6 +92,7 @@
 </main>
 <script>
     const charts = [];
+    const spreadsheetId = '1KSP-WQZOKonBoQJ5Ye16wstMFdXA9BW_goE8Qcx1ERg';
     const now = new Date();
     const start = new Date(now.getFullYear(), 0, 0);
     const diff = (now - start) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
@@ -101,7 +102,7 @@
     document.querySelector('.day-of-the-year').innerText = day;
     document.querySelector('.todays-target').innerText = Math.ceil(2500 / 365 * day) + 'h';
 
-    let parser = new PublicGoogleSheetsParser('1KSP-WQZOKonBoQJ5Ye16wstMFdXA9BW_goE8Qcx1ERg', {
+    let parser = new PublicGoogleSheetsParser(spreadsheetId, {
         sheetName: '2024',
         useFormat: true
     });
@@ -116,15 +117,17 @@
                 data: data.map(item => item[seriesName])
             });
         });
-
-        const option = {
+        chart2024.setOption({
             tooltip: {
                 trigger: 'axis',
                 valueFormatter: (value) => value + 'km'
             },
             legend: {},
             xAxis: {
-                data: data.map(item => item['Month'])
+                data: data.map(item => item['Month']),
+                axisTick: {
+                    show: false
+                }
             },
             yAxis: {
                 axisLabel: {
@@ -134,10 +137,8 @@
                 }
             },
             series: series
-        };
-        chart2024.setOption(option);
+        });
         charts.push(chart2024);
-
 
         window.addEventListener('resize', function () {
             charts.forEach(chart => chart.resize());
