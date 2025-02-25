@@ -6,7 +6,12 @@
 </head>
 <style>
     * {
+        box-sizing: border-box;
         font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    }
+
+    body{
+        margin: 0;
     }
 
     h1, h2 {
@@ -21,6 +26,7 @@
         align-items: center;
         flex-direction: column;
         gap: 10px;
+        padding: 2rem;
     }
 
     .flex{
@@ -125,6 +131,9 @@
             series: series
         };
         myChart.setOption(option);
+        window.addEventListener('resize', function () {
+            myChart.resize();
+        });
     });
 </script>
 </body>
