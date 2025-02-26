@@ -167,10 +167,32 @@
                 const seriesLabel = seriesName.replace(' / month', '');
                 const isGoalSeries = seriesLabel === 'Goal';
 
+                console.log(data);
+
                 seriesMonthly.push({
                     name: seriesLabel,
                     type: isGoalSeries ? 'line' : 'bar',
                     stack: isGoalSeries ? null : 'total',
+                    label: {
+                        show: isGoalSeries,
+                        formatter: (params) => {
+                            const percentageCompleted = data[params.dataIndex]['Completed month %'].replace('%', '');
+                            if (percentageCompleted <= 0) {
+                                return '';
+                            }
+
+                            const delta = (percentageCompleted - 100);
+                            return '{' + (delta >= 0 ? 'green' : 'red') + '|' + (percentageCompleted - 100).toFixed(2) + '%}';
+                        },
+                        rich: {
+                            red: {
+                                color: '#EE6766',
+                            },
+                            green: {
+                                color: '#3AA272',
+                            },
+                        }
+                    },
                     data: data.map(item => {
                         const timeInDecimal = item[seriesName] ? timeToDecimal(item[seriesName]) : null;
                         return timeInDecimal > 0 ? timeInDecimal : null
