@@ -1,6 +1,8 @@
 <html>
 <head>
     <title>Flandrienplezier</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
     <link rel="icon" type="image/png" href="/logo.png"/>
     <script src="/js/public-google-sheets-parser@latest.js"></script>
     <script src="/js/echarts.min.js"></script>
@@ -21,7 +23,7 @@
 <main class="p-4 h-auto min-h-screen pt-20 text-gray-900">
     <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-xs">
         <h2 class="text-lg font-semibold mb-4">Challenge 2025 - We zijn der nog nie &#129402;</h2>
-        <div class="flex items-center">
+        <div class="flex items-center gap-x-2">
             <svg viewBox="0 0 1024 1024" class="w-[50px]" xmlns="http://www.w3.org/2000/svg" fill="#000000">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -38,7 +40,7 @@
             </svg>
             <span>Dagen ver in 2025: <strong class="day-of-the-year">...</strong></span>
         </div>
-        <div class="flex items-center">
+        <div class="flex items-center gap-x-2">
             <svg viewBox="0 0 1024 1024" class="w-[50px]" xmlns="http://www.w3.org/2000/svg" fill="#000000">
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -56,17 +58,31 @@
             </svg>
             <span>Target vandaag: <strong class="todays-target">...</strong></span>
         </div>
+        <div class="grid mt-4">
+            <div class="challenge-2025-overall-chart w-full min-w-[600px] h-[400px] text-sm flex items-center justify-center">
+                Loading...
+            </div>
+        </div>
     </div>
     <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-xs">
         <h2 class="text-lg font-semibold mb-4">Challenge 2024 - We zijn der &#129395;</h2>
         <div class="overflow-x-auto">
-            <div class="challenge-2024-chart w-full min-w-[600px] h-[400px] text-sm flex items-center justify-center">Loading...</div>
+            <div class="challenge-2024-chart w-full min-w-[600px] h-[400px] text-sm flex items-center justify-center">
+                Loading...
+            </div>
         </div>
     </div>
 </main>
 <script>
     const charts = [];
     const spreadsheetId = '1KSP-WQZOKonBoQJ5Ye16wstMFdXA9BW_goE8Qcx1ERg';
+
+    const timeToDecimal = (t) => {
+        const arr = t.split(':');
+        const dec = parseInt((arr[1] / 6) * 10, 10);
+
+        return parseFloat(parseInt(arr[0], 10) + '.' + (dec < 10 ? '0' : '') + dec);
+    }
 
     const render2025Challenge = () => {
         const now = new Date();
@@ -77,9 +93,64 @@
 
         document.querySelector('.day-of-the-year').innerText = day;
         document.querySelector('.todays-target').innerText = Math.ceil(2500 / 365 * day) + 'h';
+
+        const parser = new PublicGoogleSheetsParser(spreadsheetId, {
+            sheetName: '2025',
+            useFormat: true
+        });
+
+        parser.parse().then(data => {
+            console.log(data);
+            const chart2025Overall = echarts.init(document.querySelector('.challenge-2025-overall-chart'));
+            const series = [];
+
+            Object.keys(data[0]).filter(key => !key.includes('Month') && !key.includes('month') && !key.includes('%')).forEach(seriesName => {
+                series.push({
+                    name: seriesName,
+                    type: 'line',
+                    data: data.map(item => {
+                        const timeInDecimal = item[seriesName] ? timeToDecimal(item[seriesName]) : null;
+                        return timeInDecimal > 0 ? timeToDecimal(item[seriesName]) : null
+                    })
+                });
+            });
+            chart2025Overall.setOption({
+                grid: {
+                    containLabel: true,
+                    top: '3%',
+                    bottom: '2%',
+                    left: '0%',
+                    right: '170px',
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    valueFormatter: (value) => value + 'h'
+                },
+                legend: {
+                    orient: 'vertical',
+                    right: 'right',
+
+                },
+                xAxis: {
+                    data: data.map(item => item['Month']),
+                    axisTick: {
+                        show: false
+                    }
+                },
+                yAxis: {
+                    axisLabel: {
+                        formatter: function (value, index) {
+                            return value + 'h';
+                        }
+                    }
+                },
+                series: series
+            });
+            charts.push(chart2025Overall);
+        });
     };
 
-    const render2024Challenge = ()=>{
+    const render2024Challenge = () => {
         const parser = new PublicGoogleSheetsParser(spreadsheetId, {
             sheetName: '2024',
             useFormat: true
