@@ -58,9 +58,14 @@
             </svg>
             <span>Target vandaag: <strong class="todays-target">...</strong></span>
         </div>
-        <div class="grid mt-4">
+        <div class="grid grid-cols-1 gap-4 mt-4">
             <div class="overflow-x-auto">
                 <div class="challenge-2025-overall-chart w-full min-w-[600px] h-[400px] text-sm flex items-center justify-center">
+                    Loading...
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <div class="challenge-2025-monthly-chart w-full min-w-[600px] h-[400px] text-sm flex items-center justify-center">
                     Loading...
                 </div>
             </div>
@@ -102,24 +107,26 @@
         });
 
         parser.parse().then(data => {
-            console.log(data);
             const chart2025Overall = echarts.init(document.querySelector('.challenge-2025-overall-chart'));
-            const series = [];
+            const seriesOverall = [];
 
             Object.keys(data[0]).filter(key => !key.includes('Month') && !key.includes('month') && !key.includes('%')).forEach(seriesName => {
-                series.push({
+                seriesOverall.push({
                     name: seriesName,
                     type: 'line',
                     data: data.map(item => {
                         const timeInDecimal = item[seriesName] ? timeToDecimal(item[seriesName]) : null;
-                        return timeInDecimal > 0 ? timeToDecimal(item[seriesName]) : null
+                        return timeInDecimal > 0 ? timeInDecimal : null
                     })
                 });
             });
             chart2025Overall.setOption({
+                title: {
+                    text: 'Summary',
+                },
                 grid: {
                     containLabel: true,
-                    top: '3%',
+                    top: '10%',
                     bottom: '2%',
                     left: '0%',
                     right: '170px',
@@ -146,9 +153,61 @@
                         }
                     }
                 },
-                series: series
+                series: seriesOverall
             });
             charts.push(chart2025Overall);
+
+            const seriesMonthly = [];
+            const chart2025monthly = echarts.init(document.querySelector('.challenge-2025-monthly-chart'));
+            Object.keys(data[0]).filter(key => key.includes('/ month')).forEach(seriesName => {
+                const seriesLabel = seriesName.replace(' / month', '');
+                seriesMonthly.push({
+                    name: seriesLabel,
+                    type: seriesLabel === 'Goal' ? 'line' : 'bar',
+                    stack: seriesLabel === 'Goal' ? null : 'total',
+                    data: data.map(item => {
+                        const timeInDecimal = item[seriesName] ? timeToDecimal(item[seriesName]) : null;
+                        return timeInDecimal > 0 ? timeInDecimal : null
+                    })
+                });
+            });
+            chart2025monthly.setOption({
+                title: {
+                    text: 'Monthly stats',
+                },
+                grid: {
+                    containLabel: true,
+                    top: '10%',
+                    bottom: '2%',
+                    left: '0%',
+                    right: '170px',
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    valueFormatter: (value) => value + 'h'
+                },
+                legend: {
+                    orient: 'vertical',
+                    right: 'right',
+
+                },
+                xAxis: {
+                    data: data.map(item => item['Month']),
+                    axisTick: {
+                        show: false
+                    }
+                },
+                yAxis: {
+                    axisLabel: {
+                        formatter: function (value, index) {
+                            return value + 'h';
+                        }
+                    }
+                },
+                series: seriesMonthly
+            });
+
+            charts.push(chart2025monthly);
         });
     };
 
