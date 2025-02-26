@@ -91,7 +91,7 @@
         return parseFloat(parseInt(arr[0], 10) + '.' + (dec < 10 ? '0' : '') + dec);
     }
 
-    const render2025Challenge = () => {
+    const render2025Challenge = (colors) => {
         const now = new Date();
         const start = new Date(now.getFullYear(), 0, 0);
         const diff = (now - start) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
@@ -114,12 +114,16 @@
                 seriesOverall.push({
                     name: seriesName,
                     type: 'line',
+                    itemStyle: {
+                        color: colors[seriesName],
+                    },
                     data: data.map(item => {
                         const timeInDecimal = item[seriesName] ? timeToDecimal(item[seriesName]) : null;
                         return timeInDecimal > 0 ? timeInDecimal : null
                     })
                 });
             });
+
             chart2025Overall.setOption({
                 title: {
                     text: 'Summary',
@@ -161,16 +165,22 @@
             const chart2025monthly = echarts.init(document.querySelector('.challenge-2025-monthly-chart'));
             Object.keys(data[0]).filter(key => key.includes('/ month')).forEach(seriesName => {
                 const seriesLabel = seriesName.replace(' / month', '');
+                const isGoalSeries = seriesLabel === 'Goal';
+
                 seriesMonthly.push({
                     name: seriesLabel,
-                    type: seriesLabel === 'Goal' ? 'line' : 'bar',
-                    stack: seriesLabel === 'Goal' ? null : 'total',
+                    type: isGoalSeries ? 'line' : 'bar',
+                    stack: isGoalSeries ? null : 'total',
                     data: data.map(item => {
                         const timeInDecimal = item[seriesName] ? timeToDecimal(item[seriesName]) : null;
                         return timeInDecimal > 0 ? timeInDecimal : null
-                    })
+                    }),
+                    itemStyle: {
+                        color: colors[seriesLabel],
+                    },
                 });
             });
+
             chart2025monthly.setOption({
                 title: {
                     text: 'Monthly stats',
@@ -211,7 +221,7 @@
         });
     };
 
-    const render2024Challenge = () => {
+    const render2024Challenge = (colors) => {
         const parser = new PublicGoogleSheetsParser(spreadsheetId, {
             sheetName: '2024',
             useFormat: true
@@ -225,7 +235,10 @@
                 series.push({
                     name: seriesName,
                     type: 'line',
-                    data: data.map(item => item[seriesName])
+                    data: data.map(item => item[seriesName]),
+                    itemStyle: {
+                        color: colors[seriesName],
+                    },
                 });
             });
             chart2024.setOption({
@@ -264,8 +277,20 @@
         });
     };
 
-    render2025Challenge();
-    render2024Challenge();
+    const parser = new PublicGoogleSheetsParser(spreadsheetId, {
+        sheetName: 'Kleurtjes',
+        useFormat: true
+    });
+
+    parser.parse().then(colors => {
+        const formattedColors = [];
+
+        colors.forEach(color => {
+            formattedColors[color['Wat']] = color['Kleur'];
+        });
+        render2025Challenge(formattedColors);
+        render2024Challenge(formattedColors);
+    });
 
     window.addEventListener('resize', function () {
         charts.forEach(chart => chart.resize());
