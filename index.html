@@ -67,67 +67,76 @@
 <script>
     const charts = [];
     const spreadsheetId = '1KSP-WQZOKonBoQJ5Ye16wstMFdXA9BW_goE8Qcx1ERg';
-    const now = new Date();
-    const start = new Date(now.getFullYear(), 0, 0);
-    const diff = (now - start) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
-    const oneDay = 1000 * 60 * 60 * 24;
-    const day = Math.floor(diff / oneDay);
 
-    document.querySelector('.day-of-the-year').innerText = day;
-    document.querySelector('.todays-target').innerText = Math.ceil(2500 / 365 * day) + 'h';
+    const render2025Challenge = () => {
+        const now = new Date();
+        const start = new Date(now.getFullYear(), 0, 0);
+        const diff = (now - start) + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
+        const oneDay = 1000 * 60 * 60 * 24;
+        const day = Math.floor(diff / oneDay);
 
-    let parser = new PublicGoogleSheetsParser(spreadsheetId, {
-        sheetName: '2024',
-        useFormat: true
-    });
-    parser.parse().then(data => {
-        const chart2024 = echarts.init(document.querySelector('.challenge-2024-chart'));
-        const series = [];
+        document.querySelector('.day-of-the-year').innerText = day;
+        document.querySelector('.todays-target').innerText = Math.ceil(2500 / 365 * day) + 'h';
+    };
 
-        Object.keys(data[0]).filter(key => key !== 'Month').forEach(seriesName => {
-            series.push({
-                name: seriesName,
-                type: 'line',
-                data: data.map(item => item[seriesName])
+    const render2024Challenge = ()=>{
+        const parser = new PublicGoogleSheetsParser(spreadsheetId, {
+            sheetName: '2024',
+            useFormat: true
+        });
+
+        parser.parse().then(data => {
+            const chart2024 = echarts.init(document.querySelector('.challenge-2024-chart'));
+            const series = [];
+
+            Object.keys(data[0]).filter(key => key !== 'Month').forEach(seriesName => {
+                series.push({
+                    name: seriesName,
+                    type: 'line',
+                    data: data.map(item => item[seriesName])
+                });
             });
-        });
-        chart2024.setOption({
-            grid: {
-                containLabel: true,
-                top: '3%',
-                bottom: '2%',
-                left: '0%',
-                right: '170px',
-            },
-            tooltip: {
-                trigger: 'axis',
-                valueFormatter: (value) => value + 'km'
-            },
-            legend: {
-                orient: 'vertical',
-                right: 'right',
+            chart2024.setOption({
+                grid: {
+                    containLabel: true,
+                    top: '3%',
+                    bottom: '2%',
+                    left: '0%',
+                    right: '170px',
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    valueFormatter: (value) => value + 'km'
+                },
+                legend: {
+                    orient: 'vertical',
+                    right: 'right',
 
-            },
-            xAxis: {
-                data: data.map(item => item['Month']),
-                axisTick: {
-                    show: false
-                }
-            },
-            yAxis: {
-                axisLabel: {
-                    formatter: function (value, index) {
-                        return value + 'km';
+                },
+                xAxis: {
+                    data: data.map(item => item['Month']),
+                    axisTick: {
+                        show: false
                     }
-                }
-            },
-            series: series
+                },
+                yAxis: {
+                    axisLabel: {
+                        formatter: function (value, index) {
+                            return value + 'km';
+                        }
+                    }
+                },
+                series: series
+            });
+            charts.push(chart2024);
         });
-        charts.push(chart2024);
+    };
 
-        window.addEventListener('resize', function () {
-            charts.forEach(chart => chart.resize());
-        });
+    render2025Challenge();
+    render2024Challenge();
+
+    window.addEventListener('resize', function () {
+        charts.forEach(chart => chart.resize());
     });
 </script>
 </body>

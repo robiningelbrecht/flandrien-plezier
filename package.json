@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "server": "http-server-spa . ./index.html 8083",
+    "tailwind": "npx @tailwindcss/cli -i ./css/style.css -o ./css/style.min.css --watch"
+  },
   "dependencies": {
     "@tailwindcss/cli": "^4.0.9",
     "tailwindcss": "^4.0.9"
