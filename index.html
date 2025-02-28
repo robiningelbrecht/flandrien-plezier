@@ -60,12 +60,12 @@
         </div>
         <div class="grid grid-cols-1 gap-4 mt-4">
             <div class="overflow-x-auto">
-                <div class="challenge-2025-overall-chart w-full min-w-[600px] h-[400px] text-sm flex items-center justify-center">
+                <div class="challenge-2025-overall-chart w-full min-w-[800px] h-[400px] text-sm flex items-center justify-center">
                     Loading...
                 </div>
             </div>
             <div class="overflow-x-auto">
-                <div class="challenge-2025-monthly-chart w-full min-w-[600px] h-[400px] text-sm flex items-center justify-center">
+                <div class="challenge-2025-monthly-chart w-full min-w-[800px] h-[400px] text-sm flex items-center justify-center">
                     Loading...
                 </div>
             </div>
@@ -74,7 +74,7 @@
     <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-xs">
         <h2 class="text-lg font-semibold mb-4">Challenge 2024 - We zijn der &#129395;</h2>
         <div class="overflow-x-auto">
-            <div class="challenge-2024-chart w-full min-w-[600px] h-[400px] text-sm flex items-center justify-center">
+            <div class="challenge-2024-chart w-full min-w-[600px] h-[800px] text-sm flex items-center justify-center">
                 Loading...
             </div>
         </div>
@@ -111,11 +111,33 @@
             const seriesOverall = [];
 
             Object.keys(data[0]).filter(key => !key.includes('Month') && !key.includes('month') && !key.includes('%') && !key.includes('#')).forEach(seriesName => {
+                const isGoalSeries = seriesName === 'Goal';
                 seriesOverall.push({
                     name: seriesName,
                     type: 'line',
                     itemStyle: {
                         color: colors[seriesName],
+                    },
+                    label: {
+                        show: isGoalSeries,
+                        formatter: (params) => {
+                            const completed = timeToDecimal(data[params.dataIndex]['Completed']);
+                            if (completed <= 0) {
+                                return '';
+                            }
+
+                            const goal = timeToDecimal(data[params.dataIndex]['Goal']);
+                            const delta = (completed - goal);
+                            return '{' + (delta >= 0 ? 'green' : 'red') + '|' + delta.toFixed(2) + 'h}';
+                        },
+                        rich: {
+                            red: {
+                                color: '#EE6766',
+                            },
+                            green: {
+                                color: '#3AA272',
+                            },
+                        }
                     },
                     data: data.map(item => {
                         const timeInDecimal = item[seriesName] ? timeToDecimal(item[seriesName]) : null;
@@ -137,12 +159,12 @@
                 },
                 tooltip: {
                     trigger: 'axis',
-                    valueFormatter: (value) => value + 'h'
+                    valueFormatter: (value) => value + 'h',
+                    appendTo: 'body'
                 },
                 legend: {
                     orient: 'vertical',
                     right: 'right',
-
                 },
                 xAxis: {
                     data: data.map(item => item['Month']),
@@ -167,8 +189,6 @@
                 const seriesLabel = seriesName.replace(' / month', '');
                 const isGoalSeries = seriesLabel === 'Goal';
 
-                console.log(data);
-
                 seriesMonthly.push({
                     name: seriesLabel,
                     type: isGoalSeries ? 'line' : 'bar',
@@ -182,7 +202,7 @@
                             }
 
                             const delta = (percentageCompleted - 100);
-                            return '{' + (delta >= 0 ? 'green' : 'red') + '|' + (percentageCompleted - 100).toFixed(2) + '%}';
+                            return '{' + (delta >= 0 ? 'green' : 'red') + '|' + delta.toFixed(2) + '%}';
                         },
                         rich: {
                             red: {
@@ -216,7 +236,8 @@
                 },
                 tooltip: {
                     trigger: 'axis',
-                    valueFormatter: (value) => value + 'h'
+                    valueFormatter: (value) => value + 'h',
+                    appendTo: 'body'
                 },
                 legend: {
                     orient: 'vertical',
@@ -273,12 +294,12 @@
                 },
                 tooltip: {
                     trigger: 'axis',
-                    valueFormatter: (value) => value + 'km'
+                    valueFormatter: (value) => value + 'km',
+                    appendTo: 'body'
                 },
                 legend: {
                     orient: 'vertical',
                     right: 'right',
-
                 },
                 xAxis: {
                     data: data.map(item => item['Month']),
