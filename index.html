@@ -128,9 +128,9 @@
                                 return '';
                             }
 
-                            const goal = timeToDecimal(data[params.dataIndex]['Goal']);
-                            const delta = (completed - goal);
-                            return '{' + (delta >= 0 ? 'green' : 'red') + '|' + delta.toFixed(2) + 'h}';
+                            const delta = data[params.dataIndex]['Delta'];
+                            const deltaIsPositive = timeToDecimal(delta) >= 0;
+                            return '{' + (deltaIsPositive ? 'green' : 'red') + '|' + delta + 'h}';
                         },
                         rich: {
                             red: {
