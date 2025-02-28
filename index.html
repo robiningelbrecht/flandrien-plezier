@@ -21,7 +21,7 @@
     </div>
 </nav>
 <main class="p-4 h-auto min-h-screen pt-20 text-gray-900">
-    <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+    <div class="w-full p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-xs">
         <h2 class="text-lg font-semibold mb-4">Challenge 2025 - We zijn der nog nie &#129402;</h2>
         <div class="flex items-center gap-x-2">
             <svg viewBox="0 0 1024 1024" class="w-[50px]" xmlns="http://www.w3.org/2000/svg" fill="#000000">
@@ -161,7 +161,7 @@
                 tooltip: {
                     trigger: 'axis',
                     valueFormatter: (value) => value + 'h',
-                    appendTo: 'body'
+                    confine: true
                 },
                 legend: {
                     orient: 'vertical',
@@ -238,7 +238,7 @@
                 tooltip: {
                     trigger: 'axis',
                     valueFormatter: (value) => value + 'h',
-                    appendTo: 'body'
+                    confine: true
                 },
                 legend: {
                     orient: 'vertical',
@@ -296,7 +296,7 @@
                 tooltip: {
                     trigger: 'axis',
                     valueFormatter: (value) => value + 'km',
-                    appendTo: 'body'
+                    confine: true
                 },
                 legend: {
                     orient: 'vertical',

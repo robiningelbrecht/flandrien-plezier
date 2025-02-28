@@ -206,9 +206,6 @@
   .left-0 {
     left: calc(var(--spacing) * 0);
   }
-  .z-40 {
-    z-index: 40;
-  }
   .z-1100 {
     z-index: 1100;
   }
@@ -275,9 +272,6 @@
   .h-\[400px\] {
     height: 400px;
   }
-  .h-\[800px\] {
-    height: 800px;
-  }
   .h-auto {
     height: auto;
   }
@@ -293,8 +287,11 @@
   .w-full {
     width: 100%;
   }
-  .min-w-\[600px\] {
-    min-width: 600px;
+  .w-screen {
+    width: 100vw;
+  }
+  .max-w-full {
+    max-width: 100%;
   }
   .min-w-\[800px\] {
     min-width: 800px;
@@ -333,12 +330,6 @@
   }
   .overflow-x-auto {
     overflow-x: auto;
-  }
-  .overflow-x-scroll {
-    overflow-x: scroll;
-  }
-  .overflow-y-visible {
-    overflow-y: visible;
   }
   .rounded-lg {
     border-radius: var(--radius-lg);
