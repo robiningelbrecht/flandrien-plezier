@@ -74,7 +74,7 @@
     <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-xs">
         <h2 class="text-lg font-semibold mb-4">Challenge 2024 - We zijn der &#129395;</h2>
         <div class="overflow-x-auto">
-            <div class="challenge-2024-chart w-full min-w-[600px] h-[800px] text-sm flex items-center justify-center">
+            <div class="challenge-2024-chart w-full min-w-[800px] h-[400px] text-sm flex items-center justify-center">
                 Loading...
             </div>
         </div>
@@ -107,6 +107,7 @@
         });
 
         parser.parse().then(data => {
+            console.log(data);
             const chart2025Overall = echarts.init(document.querySelector('.challenge-2025-overall-chart'));
             const seriesOverall = [];
 
