@@ -110,7 +110,7 @@
             const chart2025Overall = echarts.init(document.querySelector('.challenge-2025-overall-chart'));
             const seriesOverall = [];
 
-            Object.keys(data[0]).filter(key => !key.includes('Month') && !key.includes('month') && !key.includes('%')).forEach(seriesName => {
+            Object.keys(data[0]).filter(key => !key.includes('Month') && !key.includes('month') && !key.includes('%') && !key.includes('#')).forEach(seriesName => {
                 seriesOverall.push({
                     name: seriesName,
                     type: 'line',
