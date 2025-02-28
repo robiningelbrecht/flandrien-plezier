@@ -121,6 +121,7 @@
                     },
                     label: {
                         show: isGoalSeries,
+                        distance: 10,
                         formatter: (params) => {
                             const completed = timeToDecimal(data[params.dataIndex]['Completed']);
                             if (completed <= 0) {
@@ -133,10 +134,16 @@
                         },
                         rich: {
                             red: {
-                                color: '#EE6766',
+                                color: '#FFFFFF',
+                                backgroundColor: '#EE6766',
+                                padding: 5,
+                                borderRadius: 5,
                             },
                             green: {
-                                color: '#3AA272',
+                                color: '#FFFFFF',
+                                backgroundColor: '#3AA272',
+                                padding: 5,
+                                borderRadius: 5,
                             },
                         }
                     },
@@ -196,6 +203,7 @@
                     stack: isGoalSeries ? null : 'total',
                     label: {
                         show: isGoalSeries,
+                        distance: 5,
                         formatter: (params) => {
                             const percentageCompleted = data[params.dataIndex]['Completed month %'].replace('%', '');
                             if (percentageCompleted <= 0) {
@@ -207,10 +215,16 @@
                         },
                         rich: {
                             red: {
-                                color: '#EE6766',
+                                color: '#FFFFFF',
+                                backgroundColor: '#EE6766',
+                                padding: 5,
+                                borderRadius: 5,
                             },
                             green: {
-                                color: '#3AA272',
+                                color: '#FFFFFF',
+                                backgroundColor: '#3AA272',
+                                padding: 5,
+                                borderRadius: 5,
                             },
                         }
                     },
