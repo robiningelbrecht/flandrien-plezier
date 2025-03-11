@@ -317,8 +317,20 @@
   .max-w-md {
     max-width: var(--container-md);
   }
+  .min-w-\[400px\] {
+    min-width: 400px;
+  }
   .min-w-\[800px\] {
     min-width: 800px;
+  }
+  .min-w-\[1000px\] {
+    min-width: 1000px;
+  }
+  .min-w-\[1200px\] {
+    min-width: 1200px;
+  }
+  .min-w-\[1300px\] {
+    min-width: 1300px;
   }
   .flex-shrink {
     flex-shrink: 1;
