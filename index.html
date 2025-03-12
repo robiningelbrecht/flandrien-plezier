@@ -1,16 +1,31 @@
-<html>
+<html class=" scroll-smooth" lang="en">
 <head>
     <title>Flandrienplezier</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <link rel="icon" type="image/png" href="/logo.png"/>
-    <script src="/js/public-google-sheets-parser@latest.js"></script>
-    <script src="/js/echarts.min.js"></script>
     <link href="/css/style.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-50">
 <nav class="bg-white border-b border-gray-200 px-4 py-2.5 fixed left-0 right-0 top-0 z-1100">
     <div class="flex items-center gap-x-2.5">
+        <button data-drawer-target="drawer-navigation" data-drawer-toggle="drawer-navigation"
+                aria-controls="drawer-navigation"
+                class="p-2 text-gray-600 rounded-lg cursor-pointer md:hidden hover:text-gray-900 hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-100">
+            <svg aria-hidden="true" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                      d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                      clip-rule="evenodd"></path>
+            </svg>
+            <svg aria-hidden="true" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clip-rule="evenodd"></path>
+            </svg>
+            <span class="sr-only">{{ "Toggle sidebar"|trans }}</span>
+        </button>
         <img src="logo.png" class="rounded-sm h-8" alt="Flandriens Logo">
         <div>
             <div class="text-lg md:text-2xl font-semibold whitespace-nowrap">
@@ -18,13 +33,45 @@
             </div>
             <div class="text-sm font-normal leading-3 whitespace-nowrap">Zijn we d'r al?</div>
         </div>
-        <div class="ml-auto text-xs text-stone-400">
-            Last updated on 10-03-2025
-        </div>
     </div>
 </nav>
-<main class="p-4 h-auto min-h-screen pt-20 text-gray-900">
-    <div class="w-full p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+<aside class="fixed top-0 left-0 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 z-1001"
+       aria-label="Sidenav" id="drawer-navigation">
+    <div class="py-5 px-3 h-full bg-white divide-y divide-gray-100">
+        <ul class="space-y-2 mb-2">
+            <li>
+                <a href="#anchor-challenge-2025"
+                   class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg hover:bg-gray-100 aria-selected:bg-gray-100 group">
+                    <svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M12 8V12L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"></circle></svg>
+                    <span class="ml-3">Challenge 2025</span>
+                </a>
+            </li>
+            <li>
+                <a href="#anchor-challenge-2025-personal"
+                   class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg hover:bg-gray-100 aria-selected:bg-gray-100 group">
+                    <svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke-width="0"></g><g stroke-linecap="round" stroke-linejoin="round"></g><g> <path d="M12 14V17M12 14C9.58104 14 7.56329 12.2822 7.10002 10M12 14C14.419 14 16.4367 12.2822 16.9 10M17 5H19.75C19.9823 5 20.0985 5 20.1951 5.01921C20.5918 5.09812 20.9019 5.40822 20.9808 5.80491C21 5.90151 21 6.01767 21 6.25C21 6.94698 21 7.29547 20.9424 7.58527C20.7056 8.77534 19.7753 9.70564 18.5853 9.94236C18.2955 10 17.947 10 17.25 10H17H16.9M7 5H4.25C4.01767 5 3.90151 5 3.80491 5.01921C3.40822 5.09812 3.09812 5.40822 3.01921 5.80491C3 5.90151 3 6.01767 3 6.25C3 6.94698 3 7.29547 3.05764 7.58527C3.29436 8.77534 4.22466 9.70564 5.41473 9.94236C5.70453 10 6.05302 10 6.75 10H7H7.10002M12 17C12.93 17 13.395 17 13.7765 17.1022C14.8117 17.3796 15.6204 18.1883 15.8978 19.2235C16 19.605 16 20.07 16 21H8C8 20.07 8 19.605 8.10222 19.2235C8.37962 18.1883 9.18827 17.3796 10.2235 17.1022C10.605 17 11.07 17 12 17ZM7.10002 10C7.03443 9.67689 7 9.34247 7 9V4.57143C7 4.03831 7 3.77176 7.09903 3.56612C7.19732 3.36201 7.36201 3.19732 7.56612 3.09903C7.77176 3 8.03831 3 8.57143 3H15.4286C15.9617 3 16.2282 3 16.4339 3.09903C16.638 3.19732 16.8027 3.36201 16.901 3.56612C17 3.77176 17 4.03831 17 4.57143V9C17 9.34247 16.9656 9.67689 16.9 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                    <span class="ml-3">2025 - Personal</span>
+                </a>
+            </li>
+            <li>
+                <a href="#anchor-challenge-2024"
+                   class="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg hover:bg-gray-100 aria-selected:bg-gray-100 group">
+                    <svg class="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" stroke-width="3" stroke="currentColor" fill="none"><path d="M17.94,54.81a.1.1,0,0,1-.14,0c-1-1.11-11.69-13.23-11.69-21.26,0-9.94,6.5-12.24,11.76-12.24,4.84,0,11.06,2.6,11.06,12.24C28.93,41.84,18.87,53.72,17.94,54.81Z"></path><circle cx="17.52" cy="31.38" r="4.75"></circle><path d="M49.58,34.77a.11.11,0,0,1-.15,0c-.87-1-9.19-10.45-9.19-16.74,0-7.84,5.12-9.65,9.27-9.65,3.81,0,8.71,2,8.71,9.65C58.22,24.52,50.4,33.81,49.58,34.77Z"></path><circle cx="49.23" cy="17.32" r="3.75"></circle><path d="M17.87,54.89a28.73,28.73,0,0,0,3.9.89"></path><path d="M24.68,56.07c2.79.12,5.85-.28,7.9-2.08,5.8-5.09,2.89-11.25,6.75-14.71a16.72,16.72,0,0,1,4.93-3" stroke-dasharray="7.8 2.92"></path><path d="M45.63,35.8a23,23,0,0,1,3.88-.95"></path></svg>
+                    <span class="ml-3">Challenge 2024</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="absolute flex flex-col justify-center bottom-0 left-0 w-full bg-white z-20">
+        <div class="py-2 px-4 text-xs text-center text-gray-500">
+            <div>
+                Last updated on 10-03-2025
+            </div>
+        </div>
+    </div>
+</aside>
+<main class="md:ml-64 p-4 h-auto min-h-screen pt-20 text-gray-900">
+    <div id="anchor-challenge-2025" class="w-full p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-xs">
         <h2 class="text-lg font-semibold mb-4">Challenge 2025 - We zijn der nog nie &#129402;</h2>
         <div class="flex items-center gap-x-2">
             <svg viewBox="0 0 1024 1024" class="w-[50px]" xmlns="http://www.w3.org/2000/svg" fill="#000000">
@@ -74,7 +121,7 @@
             </div>
         </div>
     </div>
-    <div class="w-full p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+    <div id="anchor-challenge-2025-personal" class="w-full p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-xs">
         <h2 class="text-lg font-semibold mb-4">Personal challenges 2025 - Amaikes &#127947</h2>
         <div class="overflow-x-auto">
             <ul class="min-w-[1100px] space-y-1 list-inside">
@@ -123,7 +170,7 @@
             </ul>
         </div>
     </div>
-    <div class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-xs">
+    <div id="anchor-challenge-2024" class="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-xs">
         <h2 class="text-lg font-semibold mb-4">Challenge 2024 - We zijn der &#129395;</h2>
         <div class="overflow-x-auto">
             <div class="challenge-2024-chart w-full min-w-[800px] h-[400px] text-sm flex items-center justify-center">
@@ -132,10 +179,12 @@
         </div>
     </div>
 </main>
+<script src="/js/public-google-sheets-parser@latest.js"></script>
+<script src="/js/echarts.min.js"></script>
+<script src="/js/flowbite.js"></script>
 <script>
     const charts = [];
     const spreadsheetId = '1KSP-WQZOKonBoQJ5Ye16wstMFdXA9BW_goE8Qcx1ERg';
-    //const spreadsheetId = '10xilpIH3ahN93MUiGQ8xbnEXwnCocsHvkIXayu_KxVQ';
 
     const timeToDecimal = (t) => {
         const arr = t.split(':');
