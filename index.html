@@ -88,9 +88,7 @@
     </div>
     <div class="absolute flex flex-col justify-center bottom-0 left-0 w-full bg-white z-20">
         <div class="py-2 px-4 text-xs text-center text-gray-500">
-            <div>
-                Last updated on 10-03-2025
-            </div>
+            Last updated on <span class="last-update">loading...</span>
         </div>
     </div>
 </aside>
@@ -470,16 +468,19 @@
     };
 
     const parser = new PublicGoogleSheetsParser(spreadsheetId, {
-        sheetName: 'Kleurtjes',
+        sheetName: 'Misc',
         useFormat: true
     });
 
-    parser.parse().then(colors => {
+    parser.parse().then(misc => {
         const formattedColors = [];
 
-        colors.forEach(color => {
-            formattedColors[color['Wat']] = color['Kleur'];
+        misc.forEach(row => {
+            formattedColors[row['Wat']] = row['Value'];
         });
+
+        document.querySelector('.last-update').innerText = misc.filter(row => row['Wat'] === 'Laatste update')[0]['Value'];
+
         render2025Challenge(formattedColors);
         render2024Challenge(formattedColors);
     });
