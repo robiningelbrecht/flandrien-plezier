@@ -299,7 +299,7 @@
                 },
                 tooltip: {
                     trigger: 'axis',
-                    valueFormatter: (value) => value + 'h',
+                    valueFormatter: (value) => value ? value + 'h' : null,
                     confine: true
                 },
                 legend: {
@@ -383,7 +383,7 @@
                 },
                 tooltip: {
                     trigger: 'axis',
-                    valueFormatter: (value) => value + 'h',
+                    valueFormatter: (value) => value ? value + 'h' : null,
                     confine: true
                 },
                 legend: {
